@@ -2,14 +2,14 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import Link from "next/link";
 import Head from "next/head";
 import Input from "../../components/Input";
-import { studentValidationSchema } from "../../validation/student";
+import { employeeValidationSchema } from "../../validation/employee";
 import Select from "../../components/Select";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 
-const newStudent = async (data) => {
+const newEmployee = async (data) => {
   try {
-    const response = await fetch("/api/student/", {
+    const response = await fetch("/api/employee/", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -17,7 +17,7 @@ const newStudent = async (data) => {
         "Content-Type": "application/json",
       },
     });
-    const status = await response.status;
+    const status = response.status;
     const parsedResponse = await response.json();
 
     if (!parsedResponse) return;
@@ -33,28 +33,28 @@ const newStudent = async (data) => {
   }
 };
 
-const NewStudentPage = () => {
+const NewEmployeePage = () => {
   const router = useRouter();
 
   return (
     <>
       <Head>
-        <title>New Student</title>
+        <title>New Employee</title>
       </Head>
       <Formik
         initialValues={{
           firstName: "",
           lastName: "",
-          age: "",
-          address: "",
-          course: "",
+          department: "",
+          position: "",
           sex: "Male",
-          mobileNumber: "",
+          contact_number: "",
+          address: "",
         }}
-        validationSchema={studentValidationSchema}
+        validationSchema={employeeValidationSchema}
         onSubmit={async (values, actions) => {
-          const addUser = await newStudent(values);
-          if (addUser) {
+          const addEmployee = await newEmployee(values);
+          if (addEmployee) {
             router.replace("/");
             toast.success("Added successfully");
             actions.resetForm();
@@ -65,7 +65,7 @@ const NewStudentPage = () => {
           <Form>
             <section className="flex flex-col justify-center h-[600px] max-w-2xl mx-auto space-y-5">
               <header className="flex items-center justify-between mb-10">
-                <h1 className="text-3xl font-bold">New Student</h1>
+                <h1 className="text-3xl font-bold">New Employee</h1>
 
                 <div className="space-x-4">
                   <Link href="/">
@@ -98,22 +98,23 @@ const NewStudentPage = () => {
               </div>
               <div className="grid grid-cols-2 gap-x-4">
                 <Input
-                  label="Age"
-                  name="age"
-                  type="number"
-                  error={Boolean(errors.age && touched.age)}
+                  label="Role/Position"
+                  name="position"
+                  error={Boolean(errors.position && touched.position)}
                 />
                 <Input
-                  label="Mobile Number"
-                  name="mobileNumber"
-                  error={Boolean(errors.mobileNumber && touched.mobileNumber)}
+                  label="Department"
+                  name="department"
+                  error={Boolean(errors.department && touched.department)}
                 />
               </div>
               <div className="grid grid-cols-2 gap-x-4">
                 <Input
-                  label="Course"
-                  name="course"
-                  error={Boolean(errors.course && touched.course)}
+                  label="Contact Number"
+                  name="contact_number"
+                  error={Boolean(
+                    errors.contact_number && touched.contact_number
+                  )}
                 />
                 <Select name="sex" error={Boolean(errors.sex && touched.sex)} />
               </div>
@@ -130,4 +131,4 @@ const NewStudentPage = () => {
   );
 };
 
-export default NewStudentPage;
+export default NewEmployeePage;

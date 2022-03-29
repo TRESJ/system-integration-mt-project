@@ -1,4 +1,3 @@
-import bson from "bson";
 import {
   connectDatabase,
   deleteDocument,
@@ -7,7 +6,7 @@ import {
 } from "../../../utils/db";
 
 export default async function handler(req, res) {
-  const { studentId } = req.query;
+  const { id } = req.query;
 
   let client;
 
@@ -20,38 +19,40 @@ export default async function handler(req, res) {
 
   switch (req.method) {
     case "GET":
-      let currentStudent;
+      let currentEmployee;
 
       try {
-        currentStudent = await getDocument(client, "students", studentId);
+        currentEmployee = await getDocument(client, "employees", id);
       } catch (error) {
         res.status(500).json({ message: "Failed to fetch" });
         return;
       }
-      res.status(200).json({ currentStudent });
+      res.status(200).json({ currentEmployee });
       break;
     case "PATCH":
-      const { firstName, lastName, age, address, course, sex, mobileNumber } =
-        req.body;
+      const {
+        firstName,
+        lastName,
+        department,
+        position,
+        address,
+        sex,
+        contact_number,
+      } = req.body;
       let result;
 
-      const updateStudent = {
+      const updateEmployee = {
         firstName: firstName,
         lastName: lastName,
-        age: age,
+        department: department,
+        position: position,
         address: address,
-        course: course,
         sex: sex,
-        mobileNumber: mobileNumber,
+        contact_number: contact_number,
       };
 
       try {
-        result = await updateDocument(
-          client,
-          "students",
-          studentId,
-          updateStudent
-        );
+        result = await updateDocument(client, "employees", id, updateEmployee);
       } catch (error) {
         res.status(500).json({ message: "Update failed" });
         return;
@@ -59,7 +60,7 @@ export default async function handler(req, res) {
 
       res.status(200).json({
         message: `Updated successfully`,
-        data: updateStudent,
+        data: updateEmployee,
       });
       break;
 
@@ -67,13 +68,14 @@ export default async function handler(req, res) {
       let document;
 
       try {
-        document = await deleteDocument(client, "students", studentId);
+        document = await deleteDocument(client, "employees", id);
       } catch (error) {
-        res.status(500).json({ message: "Delete student failed" });
+        res.status(500).json({ message: "Delete failed" });
         return;
       }
       res.status(200).json({ message: "Sucessfully deleted" });
       break;
+
     default:
       res.status(500).end("Method is not allowed");
       break;

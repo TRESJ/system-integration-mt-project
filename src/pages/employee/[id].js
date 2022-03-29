@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 
 import Input from "../../components/Input";
-import { studentValidationSchema } from "../../validation/student";
+import { employeeValidationSchema } from "../../validation/employee";
 import Select from "../../components/Select";
 
 const EditStudentPage = () => {
@@ -14,14 +14,14 @@ const EditStudentPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const {
-    query: { studentId },
+    query: { id },
   } = router;
 
   useEffect(() => {
-    const getStudent = async () => {
+    const getEmployee = async () => {
       try {
         const res = await fetch(
-          `/api/student/${studentId}`,
+          `/api/employee/${id}`,
           { method: "GET" },
           {
             headers: {
@@ -45,7 +45,7 @@ const EditStudentPage = () => {
     };
 
     if (router.isReady) {
-      getStudent();
+      getEmployee();
     } else return;
   }, [router]);
 
@@ -57,26 +57,26 @@ const EditStudentPage = () => {
     );
   }
 
-  const currStudent = data?.currentStudent;
+  const currEmployee = data?.currentEmployee;
   return (
     <>
       <Head>
-        <title>{`Student ${currStudent?.firstName} ${currStudent?.lastName}`}</title>
+        <title>{`Student ${currEmployee?.firstName} ${currEmployee?.lastName}`}</title>
       </Head>
       <Formik
         initialValues={{
-          firstName: currStudent?.firstName ?? "",
-          lastName: currStudent?.lastName ?? "",
-          age: currStudent?.age ?? "",
-          address: currStudent?.address ?? "",
-          course: currStudent?.course ?? "",
-          sex: currStudent?.sex ?? "",
-          mobileNumber: currStudent?.mobileNumber ?? "",
+          firstName: currEmployee?.firstName ?? "",
+          lastName: currEmployee?.lastName ?? "",
+          department: currEmployee?.department ?? "",
+          position: currEmployee?.position ?? "",
+          sex: currEmployee?.sex ?? "",
+          contact_number: currEmployee?.contact_number ?? "",
+          address: currEmployee?.address ?? "",
         }}
-        validationSchema={studentValidationSchema}
+        validationSchema={employeeValidationSchema}
         onSubmit={async (values) => {
           try {
-            const res = await fetch(`/api/student/${studentId}`, {
+            const res = await fetch(`/api/employee/${id}`, {
               method: "PATCH",
               body: JSON.stringify(values),
               headers: { "Content-Type": "application/json" },
@@ -103,7 +103,10 @@ const EditStudentPage = () => {
           <Form>
             <section className="flex flex-col justify-center h-[600px] max-w-2xl mx-auto space-y-5">
               <header className="flex items-center justify-between mb-10">
-                <h1 className="text-3xl font-bold">{`Student ${currStudent?.firstName} ${currStudent?.lastName}`}</h1>
+                <h1 className="text-2xl font-bold space-x-2">
+                  <span>Employee</span>
+                  <span className="text-blue-600">{`${currEmployee?.firstName} ${currEmployee?.lastName}`}</span>
+                </h1>
 
                 <div className="space-x-4">
                   <Link href="/">
@@ -117,7 +120,7 @@ const EditStudentPage = () => {
                       !(dirty && isValid) && "btn-disabled"
                     } ${isSubmitting && "btn-disabled"}`}
                   >
-                    {isSubmitting ? "Updating" : "Update"}
+                    {isSubmitting ? "Saving" : "Save"}
                   </button>
                 </div>
               </header>
@@ -136,22 +139,23 @@ const EditStudentPage = () => {
               </div>
               <div className="grid grid-cols-2 gap-x-4">
                 <Input
-                  label="Age"
-                  name="age"
-                  type="number"
-                  error={Boolean(errors.age && touched.age)}
+                  label="Role/Position"
+                  name="position"
+                  error={Boolean(errors.position && touched.position)}
                 />
                 <Input
-                  label="Mobile Number"
-                  name="mobileNumber"
-                  error={Boolean(errors.mobileNumber && touched.mobileNumber)}
+                  label="Department"
+                  name="department"
+                  error={Boolean(errors.department && touched.department)}
                 />
               </div>
               <div className="grid grid-cols-2 gap-x-4">
                 <Input
-                  label="Course"
-                  name="course"
-                  error={Boolean(errors.course && touched.course)}
+                  label="Contact Number"
+                  name="contact_number"
+                  error={Boolean(
+                    errors.contact_number && touched.contact_number
+                  )}
                 />
                 <Select name="sex" error={Boolean(errors.sex && touched.sex)} />
               </div>

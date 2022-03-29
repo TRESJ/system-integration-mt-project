@@ -1,16 +1,13 @@
 import * as yup from "yup";
 
-export const studentValidationSchema = yup.object().shape({
+export const employeeValidationSchema = yup.object().shape({
   firstName: yup.string().required("This field is requried"),
   lastName: yup.string().required("This field is requried"),
-  age: yup
-    .string()
-    .required("This field is requried")
-    .matches(/^[0-9]+$/, "Must be only digits"),
+  position: yup.string().required("This field is requried"),
   address: yup.string().required("This field is requried"),
-  course: yup.string().required("This field is requried"),
+  department: yup.string().required("This field is requried"),
   sex: yup.string().required("This field is requried"),
-  mobileNumber: yup
+  contact_number: yup
     .string()
     .required("This field is requried")
     .matches(

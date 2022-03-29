@@ -6,9 +6,8 @@
 
 @layer components {
   .btn {
-    @apply inline-block px-3 py-2 text-sm text-white bg-indigo-600 rounded hover:bg-indigo-700 focus:ring focus:ring-indigo-600 focus:ring-offset-1;
+    @apply inline-block px-3 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 focus:ring focus:ring-blue-600 focus:ring-offset-1;
   }
-
   .btn-disabled {
     @apply disabled:opacity-70 pointer-events-none;
   }
@@ -25,6 +24,6 @@
     @apply absolute -bottom-[19px] left-0 text-sm text-red-500 pointer-events-none select-none;
   }
   .table-header {
-    @apply pt-3 pb-2 text-xs font-medium tracking-wider text-left text-gray-600 border-b border-gray-300 whitespace-nowrap bg-gray-50;
+    @apply px-6 py-4 text-sm text-white whitespace-nowrap;
   }
 }

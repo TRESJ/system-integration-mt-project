@@ -1,7 +1,6 @@
 import { MongoClient, ObjectId } from "mongodb";
 
-const MONGODB_URI =
-  "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false";
+const MONGODB_URI = "mongodb://localhost:27017/employee-information";
 
 export async function connectDatabase() {
   try {
