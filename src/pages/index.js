@@ -16,10 +16,11 @@ const headers = [
 
 export default function Home() {
   const [data, setData] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    setIsLoading(true);
     const getEmployees = async () => {
       try {
         const res = await fetch("/api/employee");
@@ -77,7 +78,7 @@ export default function Home() {
       <Head>
         <title>Employee Information System</title>
       </Head>
-      <main className="flex flex-col justify-center max-w-5xl mx-auto h-screen">
+      <main className="flex flex-col justify-center h-screen max-w-5xl px-4 mx-auto">
         <header className="flex items-center justify-between mb-5">
           <h1 className="text-3xl font-bold">Employees</h1>
           <Link href="/employee/new">
