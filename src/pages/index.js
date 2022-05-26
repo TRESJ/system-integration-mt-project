@@ -20,8 +20,9 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    setIsLoading(true);
     const getEmployees = async () => {
+    setIsLoading(true);
+      
       try {
         const res = await fetch("/api/employee");
         const parsedRes = await res.json();
@@ -31,6 +32,7 @@ export default function Home() {
           setIsLoading(false);
           return parsedRes;
         }
+    setIsLoading(false);
 
         return;
       } catch (error) {
